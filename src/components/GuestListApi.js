@@ -10,22 +10,25 @@ export async function addGuest(guest) {
     body: JSON.stringify(guest),
   });
   const createdGuest = await response.json();
+  return createdGuest;
 }
 
 // Get all guest from the list
 export async function getAllGuests() {
   const response = await fetch(`${baseUrl}/guests`);
   const allGuests = await response.json();
+  return allGuests;
 }
 
 // Get a single guest from the list
-export async function getSingleGuest(id) {
+export async function getSingleGuest() {
   const response = await fetch(`${baseUrl}/guests/:id`);
   const guest = await response.json();
+  return guest;
 }
 
 // Update info for a single guest
-export async function updateGuestInfo(id, update) {
+export async function updateGuestInfo() {
   const response = await fetch(`${baseUrl}/guests/1`, {
     method: 'PUT',
     headers: {
@@ -34,10 +37,12 @@ export async function updateGuestInfo(id, update) {
     body: JSON.stringify({ attending: true }),
   });
   const updatedGuest = await response.json();
+  return updatedGuest;
 }
 
 // Delete a single guest
-export async function deleteSingleGuest(id) {
+export async function deleteSingleGuest() {
   const response = await fetch(`${baseUrl}/guests/1`, { method: 'DELETE' });
   const deletedGuest = await response.json();
+  return deletedGuest;
 }

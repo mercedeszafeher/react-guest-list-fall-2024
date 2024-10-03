@@ -1,70 +1,83 @@
-import React, { useState } from 'react';
-import GuestListApi from '../components/GuestListApi.jsx';
+import { useEffect, useState } from 'react';
+import GuestItem from '../components/GuestItem';
+import * as guestListApi from '../components/GuestListApi.js';
+import CheckBox from './CheckBox';
 
-export default function GuestsList() {
-  const [guests, setGuests] = useState();
-  const [firstName, setFirstName] = useState([]);
-  const [lastName, setLastName] = useState([]);
+export default function GuestList() {
+  const [guests, setGuests] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch all guests
+  useEffect(() => {
+    guestListApi
+      .getAllGuests() // Call API to get all guests
+      .then((allGuests) => {
+        setGuests(allGuests); // Set guests once the data is received
+        setLoading(false); // Set loading to false after guests are set
+      })
+      .catch((error) => {
+        console.error('Error fetching guests:', error); // Log the error if the API fails
+        setLoading(false); // Also set loading to false if there's an error
+      });
+  }, []);
+
+  // Handle adding a new guest
+  const handleAddGuest = (firstName, lastName) => {
+    guestListApi
+      .addGuest({ firstName, lastName }) // Add a new guest via API
+      .then((newGuest) => {
+        setGuests((prevGuests) => [...prevGuests, newGuest]); // Add the new guest to the existing list
+      })
+      .catch((error) => {
+        console.error('Error adding guest:', error); // Log any error during the guest addition
+      });
+  };
+
+  // Handle deleting a guest
+  const handleDeleteGuest = (id) => {
+    guestListApi
+      .deleteSingleGuest(id) // Call API to delete a guest
+      .then(() => {
+        setGuests((prevGuests) =>
+          prevGuests.filter((guest) => guest.id !== id),
+        ); // Remove the deleted guest from the list
+      })
+      .catch((error) => {
+        console.error('Error deleting guest:', error); // Log any error during guest deletion
+      });
+  };
+
+  // Handle updating a guest's attending status
+  const handleUpdateGuest = (id, attending) => {
+    guestListApi
+      .updateGuestInfo(id, { attending }) // Update guest attending status via API
+      .then(() => {
+        setGuests((prevGuests) =>
+          prevGuests.map((guest) => {
+            guest.id === id ? { ...guest, attending } : guest;
+          }),
+        );
+      })
+      .catch((error) => {
+        console.error('Error updating guest info:', error); // Log any error during guest update
+      });
+  };
+
+  if (loading) {
+    return <div>Loading...</div>; // Show loading message while fetching data
+  }
+
   return (
-    <div>
-      <div className="addGuest">
-        <h1>Welcome to our special Event</h1>
-        <h4>
-          To add a guest please enter Firstname and Lastname and click Add Guest
-        </h4>
-        <form
-          onSubmit={(event) => {
-            event.preventDefault();
-            setFirstName(firstName);
-            setLastName(lastName);
-          }}
-        >
-          <label>
-            First name:
-            <input
-              value={firstName}
-              onChange={(event) => setFirstName(event.currentTarget.value)}
-            />
-          </label>
-          <label>
-            Last name:
-            <input
-              value={lastName}
-              onChange={(event) => setLastName(event.currentTarget.value)}
-            />
-          </label>
-          <button
-            onClick={() => {
-              const newGuestId = guests[guests.length - 1].id + 1;
-              const newGuest = {
-                id: newGuestId,
-                firstName: firstName,
-                lastName: lastName,
-                attending: false,
-              };
-              setGuests([...guests, newGuest]);
-            }}
-          >
-            Submit
-          </button>
-        </form>
-      </div>
-
-      <div className="guestList">
-        {guests.map((guest) => {
-          return (
-            <div
-              key={`guest-${guest.id}`}
-              data-test-id="guest"
-              className="guestItem"
-            >
-              <h4>
-                {guests.firstName} {guests.lastName}
-              </h4>
-            </div>
-          );
-        })}
-      </div>
+    <div className="guestList">
+      {guests.map((guest) => (
+        <GuestItem
+          key={`guest-${guest.id}`}
+          guest={guest}
+          deleteGuest={handleDeleteGuest} // Pass delete handler
+          updateGuest={handleUpdateGuest} // Pass update handler
+        />
+      ))}
+      <CheckBox />
     </div>
   );
 }

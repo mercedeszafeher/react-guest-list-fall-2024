@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
 
-export default function CheckBox() {
-  const [isChecked, setIsChecked] = useState(false);
+export default function CheckBox({ checked, onChange, label }) {
+  const [isChecked, setIsChecked] = useState(checked);
   return (
     <form onSubmit={(event) => event.preventDefault()}>
       <p>Attending</p>
       <input
         type="checkbox"
         checked={isChecked}
-        onChange={(event) => setIsChecked(event.currentTarget.value)}
+        aria-label={label}
+        onChange={(event) => {
+          setIsChecked(event.target.checked);
+          onChange(event.target.checked);
+        }}
       />
     </form>
   );

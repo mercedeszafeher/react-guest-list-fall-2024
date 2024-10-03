@@ -1,0 +1,36 @@
+.App {
+  font-family: sans-serif;
+  text-align: center;
+}
+
+form {
+  margin: 20px 0;
+}
+
+label {
+  margin: 10px;
+}
+
+.guestList {
+  margin: 20px 0;
+}
+
+.guestItem {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+
+button {
+  background-color: rgb(43, 6, 62);
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: rgb(125, 0, 139);
+}

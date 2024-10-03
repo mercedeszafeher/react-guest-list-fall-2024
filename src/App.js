@@ -1,6 +1,13 @@
 import './App.css';
-import logo from './logo.svg';
+import GuestForm from './components/GuestForm';
+import GuestList from './components/GuestsList';
 
 export default function App() {
-  return ( );
+  return (
+    <div className="App">
+      <h1>The Guest List</h1>
+      <GuestForm />
+      <GuestList />
+    </div>
+  );
 }
