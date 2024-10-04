@@ -78,7 +78,6 @@ export default function GuestList() {
           addGuest={handleAddGuest}
         />
       ))}
-      <CheckBox />
     </div>
   );
 }

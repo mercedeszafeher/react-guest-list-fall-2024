@@ -46,8 +46,8 @@ export default function GuestForm() {
           }
         }}
       />
-      <button>Add Guest</button>
       <CheckBox />
+      <button>Add Guest</button>
     </form>
   );
 }
