@@ -6,8 +6,14 @@ export default function App() {
   return (
     <div className="App">
       <h1>The Guest List</h1>
-      <GuestForm />
-      <GuestList />
+      {GuestForm.loading ? (
+        <p>Loading...</p>
+      ) : (
+        <>
+          <GuestForm />
+          <GuestList />
+        </>
+      )}
     </div>
   );
 }

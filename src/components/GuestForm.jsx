@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import CheckBox from './CheckBox';
 
 export default function GuestForm() {
   const [firstName, setFirstName] = useState('');
@@ -18,15 +19,6 @@ export default function GuestForm() {
     const createdGuest = await response.json();
     console.log(createdGuest);
   }
-
-  /* const handleSubmit = (event) => {
-    event.preventDefault();
-    if (firstName && lastName) {
-      addGuest(firstName, lastName);
-      setFirstName(''); // Clear the first name
-      setLastName(''); // Clear the last name
-    }
-  }; */
 
   return (
     <form
@@ -49,10 +41,13 @@ export default function GuestForm() {
         onKeyPress={async (event) => {
           if (event.key === 'Enter') {
             await addGuest({ firstName, lastName }); // Submit on pressing Enter
+            setFirstName(''); // Clear the first name
+            setLastName(''); // Clear the last name
           }
         }}
       />
       <button>Add Guest</button>
+      <CheckBox />
     </form>
   );
 }

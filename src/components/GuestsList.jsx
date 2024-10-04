@@ -22,8 +22,8 @@ export default function GuestList() {
   }, []);
 
   // Handle adding a new guest
-  const handleAddGuest = (firstName, lastName) => {
-    guestListApi
+  const handleAddGuest = async (firstName, lastName) => {
+    await guestListApi
       .addGuest({ firstName, lastName }) // Add a new guest via API
       .then((newGuest) => {
         setGuests((prevGuests) => [...prevGuests, newGuest]); // Add the new guest to the existing list
@@ -34,8 +34,8 @@ export default function GuestList() {
   };
 
   // Handle deleting a guest
-  const handleDeleteGuest = (id) => {
-    guestListApi
+  const handleDeleteGuest = async (id) => {
+    await guestListApi
       .deleteSingleGuest(id) // Call API to delete a guest
       .then(() => {
         setGuests((prevGuests) =>
@@ -48,9 +48,9 @@ export default function GuestList() {
   };
 
   // Handle updating a guest's attending status
-  const handleUpdateGuest = (id, attending) => {
-    guestListApi
-      .updateGuestInfo(id, { attending }) // Update guest attending status via API
+  const handleUpdateGuest = async (id, attending) => {
+    await guestListApi
+      .updateGuestInfo(id, attending) // Update guest attending status via API
       .then(() => {
         setGuests((prevGuests) =>
           prevGuests.map((guest) => {
@@ -73,8 +73,9 @@ export default function GuestList() {
         <GuestItem
           key={`guest-${guest.id}`}
           guest={guest}
-          deleteGuest={handleDeleteGuest} // Pass delete handler
-          updateGuest={handleUpdateGuest} // Pass update handler
+          deleteGuest={handleDeleteGuest}
+          updateGuest={handleUpdateGuest}
+          addGuest={handleAddGuest}
         />
       ))}
       <CheckBox />
